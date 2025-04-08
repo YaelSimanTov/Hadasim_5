@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>Product store</title>
+  <link rel="stylesheet" href="/styles/ownerHomePage.css">
+</head>
+<body>
+
+  <h1>Welcome to the site</h1>
+
+  <!-- <div>
+    <a href="cart.html" id="cart-link">Go to Cart</a>
+  </div>
+
+  <div>
+    <input type="text" id="search-input" placeholder="search product...">
+    <button onclick="searchProduct()">search</button>
+  </div> -->
+
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Search product">
+    <!-- <button onclick="searchProduct()">Search</button> -->
+    <a href="/api/orderRoutes/cart" id="cart-link">My Cart</a>
+  </div>
+
+
+  <div class="products-container" id="products">
+    <!-- Products will be entered here -->
+  </div>
+
+  <script src="./scripts/ownerHomePage.js"></script>
+</body>
+</html>

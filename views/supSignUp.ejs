@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Registration</title>
+    <link rel="stylesheet" href="/styles/supSignUp.css">
+</head>
+<body>
+    <header>
+        <h1>Supplier Sign Up</h1>
+    </header>
+    <div class="container">
+        <form id="registration-form">
+            <label for="company-name">Company Name:</label>
+            <input type="text" id="company-name" name="company-name" required>
+            
+            <label for="contact-name">Contact Name:</label>
+            <input type="text" id="contact-name" name="contact-name" required>
+            
+            <label for="phone-number">Phone Number:</label>
+            <input type="tel" id="phone-number" name="phone-number" required>
+            
+            <label for="products">Products (Enter each product below):</label>
+            
+            <div id="product-list">
+                <div class="product-entry">
+                    <input type="text" placeholder="Product Name" class="product-name" required>
+                    <input type="number" placeholder="Price per Item" class="product-price" required>
+                    <input type="number" placeholder="Quantity Available" class="product-quantity" required>
+                    <input type="number" placeholder="Minimum Quantity" class="product-min-quantity" required>
+
+                </div>
+            </div>
+            
+            <button type="button" id="add-product">Add More Products</button>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p class="login-link">Already have an account? <a href="/login-supplier">Login here</a></p>
+
+    </div>
+    
+    <script src="./scripts/supSignUp.js"></script>
+</body>
+</html>

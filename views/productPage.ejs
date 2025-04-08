@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Order</title>
+  <link rel="stylesheet" href="/styles/productPage.css">
+</head>
+<body>
+
+  <h1>Product Details</h1>
+  
+  <div class="product-container">
+    <div class="product-image">
+      <img src="/productImage.png" alt="Product Image" />
+    </div>
+
+    <div id="product-details" class="product-info">
+        <!-- Product details will be inserted here dynamically -->
+    </div>
+  </div>
+
+  <div class="quantity-section">
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="order-quantity" min="1" />
+    <p id="total-price" class="total-price">Total Price: $0</p>
+    <button onclick="addToCart()">Order Now</button>
+  </div>
+
+  <script src="/scripts/productPage.js"></script>
+</body>
+</html>
