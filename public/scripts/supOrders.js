@@ -1,108 +1,111 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//   const supplierId = localStorage.getItem('supplierId'); // This should be dynamically set from the session or user data
-//   console.log("supplierId:", supplierId); // <<=== כאן תראי אם הוא undefined
 
-  
-//   if (!supplierId) {
-//       alert("Supplier not logged in.");
-//       return;
-//   }
-//   // Fetch products from the server
-//   fetch(`/api/suppliersRoutes/${supplierId}/supplierOrders`)
-//       .then(response => response.json())
-//       .then(data => {
-//           if (data.success) {
-//             const supplierId = localStorage.getItem("supplierId"); // מזהה הספק
-//             const ordersContainer = document.getElementById("orders-container");
-//             const totalElement = document.getElementById("orders-total");
- 
-// const urlParams = new URLSearchParams(window.location.search);
-// const supplierId = urlParams.get("supplierId");
 
-// //let product = null;
-// //supOrders.js 
+document.addEventListener('DOMContentLoaded', loadOrders);
 
-document.addEventListener('DOMContentLoaded', loadOrders); // נטען כשהמסמך מוכן
-function loadOrders()
-   {
-    const supplierId = localStorage.getItem("supplierId"); // מזהה הספק
-    const ordersContainer = document.getElementById("orders-container");
-    const totalElement = document.getElementById("orders-total");
-    //console.error(`Supplier ID is missing!`);
-    console.log(supplierId); // הדפסת הערך של supplierId לצורך בדיקה
+function loadOrders() {
+  const supplierId = localStorage.getItem("supplierId");
+  const ordersContainer = document.getElementById("orders-container");
+  const totalElement = document.getElementById("orders-total");
 
-    if (!supplierId) {
-      console.error("Supplier ID is missing!");
-      return;
-    }
+  console.log("supplierId from localStorage:", supplierId);
 
-    // שליחת בקשה ל-API
-    fetch(`/api/suppliersRoutes/supOrders/${supplierId}`)
-      .then(response => {
-        if (!response.ok) {
-            // אם הסטטוס לא תקין, חזור עם שגיאה
-          return response.text().then(text => {
-              throw new Error(`Error: ${text}`);
-          });
-        }
-        return response.json(); // אם התשובה תקינה, החזר כ-JSON
-      })
-      .then(orders => {
-        if (orders.length === 0) {
-          ordersContainer.innerHTML = "<p>You have no orders.</p>";
-          totalElement.textContent = "Total: $0";
-          return;
-        }
+  if (!supplierId) {
+    console.error("Supplier ID is missing!");
+    return;
+  }
 
-        let total = 0;
-        ordersContainer.innerHTML = "";
+  fetch(`/api/orderRoutes/supOrders/${supplierId}`)
+    .then(response => {
+      if (!response.ok) {
+        return response.text().then(text => {
+          throw new Error(`Error: ${text}`);
+        });
+      }
+      return response.json();
+    })
+    .then(orders => {
+      console.log("Fetched orders:", orders);
+      if (!Array.isArray(orders)) {
+        throw new Error("Expected an array of orders, got: " + JSON.stringify(orders));
+      }
 
-        orders.forEach((order) => {
+      if (orders.length === 0) {
+        ordersContainer.innerHTML = "<p>You have no orders.</p>";
+        totalElement.textContent = "Total: $0";
+        return;
+      }
+
+      let total = 0;
+      ordersContainer.innerHTML = "";
+
+      const statuses = ["Pending", "In Process", "Completed"];
+
+      statuses.forEach(status => {
+        const filteredOrders = orders.filter(order => order.status === status);
+        if (filteredOrders.length === 0) return;
+
+        const section = document.createElement("div");
+        section.innerHTML = `<h3>${status}</h3>`;
+
+        filteredOrders.forEach((order) => {
           const itemTotal = order.price * order.quantity;
           total += itemTotal;
 
-          const orderHTML = `
-            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-              <h3>${order.productName}</h3>
-              <p>Price per item: $${order.price}</p>
-              <p>Quantity: ${order.quantity}</p>
-              <p>Status: ${order.status}</p>
-              <p><strong>Item Total: $${itemTotal.toFixed(2)}</strong></p>
-              ${order.status === "Pending" ? 
-                `<button onclick="updateStatus('${order._id}')">Mark as In Process</button>` : ""}
-            </div>
+          const orderDiv = document.createElement("div");
+          orderDiv.className = `order-box ${getStatusClass(order.status)}`;
+
+          orderDiv.innerHTML = `
+            <h3>${order.productName}</h3>
+            <p>Price per item: $${order.price}</p>
+            <p>Quantity: ${order.quantity}</p>
+            <p><strong>Status:</strong> ${order.status}</p>
+            <p><strong>Item Total: $${itemTotal.toFixed(2)}</strong></p>
+            ${order.status === "Pending" ? 
+              `<button onclick="updateStatus('${order._id}')">Mark as In Process</button>` : ""}
           `;
 
-          ordersContainer.innerHTML += orderHTML;
+          section.appendChild(orderDiv);
         });
 
-        totalElement.textContent = `Total: $${total.toFixed(2)}`;
-      })
-      .catch(error => {
-        //console.error('Error fetching orders:', error);
-        ordersContainer.innerHTML = "<p>Error loading orders. Please try again later.</p>";
+        ordersContainer.appendChild(section);
       });
-  }
 
-
-  // עדכון סטטוס הזמנה
-  function updateStatus(orderId) {
-    fetch(`/api/orderRoutes/${orderId}/status`, {
-      method: 'PATCH',
+      totalElement.textContent = `Total: $${total.toFixed(2)}`;
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'In Process') {
-          alert('Order status updated to In Process.');
-          loadOrders(); // טוען מחדש את ההזמנות לאחר השינוי
-        } else {
-          alert('Failed to update status.');
-        }
-      })
-      .catch(error => {
-        console.error('Error updating status:', error);
-        alert('Error updating status.');
-      });
-  }
+    .catch(error => {
+      console.error('Error fetching orders:', error);
+      ordersContainer.innerHTML = "<p>Error loading orders. Please try again later.</p>";
+    });
+}
 
-  window.addEventListener("DOMContentLoaded", loadOrders);
+function updateStatus(orderId) {
+  fetch(`/api/orderRoutes/${orderId}/status`, {
+    method: 'PATCH',
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'In Process') {
+        alert('Order status updated to In Process.');
+        loadOrders();
+      } else {
+        alert('Failed to update status.');
+      }
+    })
+    .catch(error => {
+      console.error('Error updating status:', error);
+      alert('Error updating status.');
+    });
+}
+
+function getStatusClass(status) {
+  switch (status) {
+    case "Pending":
+      return "status-pending";
+    case "In Process":
+      return "status-in-process";
+    case "Completed":
+      return "status-completed";
+    default:
+      return "";
+  }
+}

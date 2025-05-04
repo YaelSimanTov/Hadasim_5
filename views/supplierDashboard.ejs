@@ -11,7 +11,7 @@
         <h1> Welcome to the site!</h1>
         <nav>
             <ul>
-                <li><a href="/api/orderRoutes/supplierOrders/<%=id%>">My Orders</a></li>
+                <li><a href="/api/orderRoutes/supplierOrders/<%= id%>">My Orders</a></li>
                 <li><a href="/api/suppliersRoutes/accountSettings">Account Settings</a></li>
                 <li><a href="logout.html">Logout</a></li>
             </ul>
@@ -20,7 +20,10 @@
 
 
     <!-- <script src="script.js"></script> -->
-     
+    <script>
+        localStorage.setItem("supplierId", "<%= id %>");
+    </script>
+      
 
 </body>
 </html>

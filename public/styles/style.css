@@ -48,25 +48,64 @@ body {
     text-align: center;
   }
   
-  .status-cell {
-    text-align: center;
-    font-weight: bold;
-  }
+/* Design each invitation box */
+.order-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  margin-top: 20px;
+}
   
-  .status-cell.gray {
-    background-color: #e0e0e0; /* Light gray */
-  }
-  
-  .status-cell.yellow {
-    background-color: #ffeb3b; /* Yellow */
-  }
-  
-  .status-cell.green {
-    background-color: #66bb6a; /* Green */
-    color: white;
-  }
-  
-  button {
-    margin-top: 20px;
-  }
+
+
+/*title for every kind of status*/
+#orders-container h3 {
+  margin-top: 30px;
+  color: #EF6C00;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+}
+
+/* Design buttons  */
+.order-box button {
+  padding: 6px 12px;
+  background-color:  #66bb6a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.order-box button:hover {
+  background-color:  #66bb6a;
+}
+
+
+
+#cart-total {
+  margin-top: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.status-pending {
+  background-color: #ffdddd;
+  border-left: 5px solid #f44336;
+}
+
+.status-in-process {
+  background-color: #fff8e1;
+  border-left: 5px solid #ffeb3b;
+}
+
+.status-completed {
+  background-color: #e8f5e9;
+  border-left: 5px solid #4caf50;
+}
   

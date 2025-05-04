@@ -15,7 +15,7 @@ async function loadProduct() {
     product = await response.json();
     document.getElementById("product-details").innerHTML = `
     <h2 class="product-title">${product.productName}</h2>
-    <div class="detail-item"><span class="label">Supplier:</span> <span class="value">${product.supplierName}</span></div>
+    <div class="detail-item"><span class="label">Supplier:</span> <span class="value">${product.companyName}</span></div>
     <div class="detail-item"><span class="label">Price:</span> <span class="value">$${product.pricePerItem}</span></div>
     <div class="detail-item"><span class="label">Stock Available:</span> <span class="value">${product.stockQuantity}</span></div>
     <div class="detail-item"><span class="label">Minimum Order Quantity:</span> <span class="value">${product.minQuantity}</span></div>
@@ -47,7 +47,7 @@ async function addToCart() {
     productId: product._id,
     productName: product.productName,
     supplierId: product.supplierId,
-    supplierName: product.supplierName,   
+    supplierName: product.companyName,   
     price: product.pricePerItem,
     quantity: quantity,
     status: "Pending", // Initial status is "Pending"
@@ -61,8 +61,8 @@ async function addToCart() {
   // Add the order to the database (server side)
   await saveOrder(orderItem);
 
-  // Redirect to cart page
-  //window.location.href = "./cart.html";
+  // Redirect to home page of the owner
+  window.location.href = `/ownerHomePage`;
 }
 
 // Save the order to the database
@@ -79,12 +79,18 @@ async function saveOrder(order) {
     if (!response.ok) {
       throw new Error("Failed to save the order");
     }
+
+    // localStorage.removeItem("cart");  // Clean the cart
+
     const savedOrder = await response.json();
     console.log("Order saved successfully:", savedOrder);
+    alert("Order placed successfully!"); 
   } catch (error) {
     console.error("Error saving order:", error.message);
+    alert("An error occurred while placing the order. Please try again."); // Error message
   }
 }
+
 
 document.getElementById("order-quantity").addEventListener("input", updateTotalPrice);
 

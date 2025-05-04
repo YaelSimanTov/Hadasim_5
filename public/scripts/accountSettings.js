@@ -1,7 +1,6 @@
 // Fetch the supplier's products and display them
 document.addEventListener('DOMContentLoaded', function () {
     const supplierId = localStorage.getItem('supplierId'); // This should be dynamically set from the session or user data
-    console.log("supplierId:", supplierId); // <<=== כאן תראי אם הוא undefined
 
     
     if (!supplierId) {

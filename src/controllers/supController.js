@@ -6,6 +6,18 @@ const mongoose = require('mongoose');
 
 const registerSupplier = async (req, res) => {
     try {
+      const { contactName, phoneNumber } = req.body;
+
+      // Check if supplier already exists
+      const existingSupplier = await Supplier.findOne({ contactName, phoneNumber });
+  
+      if (existingSupplier) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Looks like you’re already registered! Please log in to your account.'
+        });
+      }
+    
       const newSupplier = new Supplier(req.body);
       await newSupplier.save();
       res.status(201).json({ success: true, supplier: newSupplier });
@@ -78,7 +90,7 @@ const addProduct = async (req, res) => {
             productName,
             pricePerItem,
             stockQuantity,
-            minQuantity: 1 // Add default minQuantity or let it be customizable
+            minQuantity
         };
         supplier.products.push(newProduct);
         await supplier.save();
@@ -93,16 +105,42 @@ const addProduct = async (req, res) => {
   // Route to fetch all products from all suppliers
   
 const ownerHomePage = async (req, res) => {
-    try {
+  try {
         const suppliers = await Supplier.find();
-        const allProducts = suppliers.flatMap(supplier => supplier.products);
+        // const allProducts = suppliers.flatMap(supplier => supplier.products);
+        const allProducts = [];
+
+        suppliers.forEach(supplier => {
+          supplier.products.forEach(product => {
+            //add supplier name to each product
+            allProducts.push({
+              ...product.toObject(),        
+              companyName: supplier.companyName
+            });
+          });
+        });
+    
   
-        res.json({ success: true, products: allProducts });
-    } catch (err) {
+      res.json({ success: true, products: allProducts });
+      // res.render('ownerHomePage', { products: allProducts });
+  } catch (err) {
         console.error('Error fetching products:', err);
         res.status(500).json({ success: false, message: 'Server error fetching products.' });
-    }
-  };
+  }
+};
+
+const goOwnerPage= async (req , res) => {
+  try {
+        const suppliers = await Supplier.find();
+        const allProducts = suppliers.flatMap(supplier => supplier.products);
+        res.render('ownerHomePage', { products: allProducts });
+
+  } catch (err) {
+        console.error('Error fetching products:', err);
+        res.status(500).json({ success: false, message: 'Server error fetching products.' });
+  }
+};
+
 
 // Get product by ID (searches all suppliers)
 // const getProductById = async (req, res) => {
@@ -163,5 +201,38 @@ const getProductById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-  
-module.exports = { registerSupplier, loginSupplier, getProducts, addProduct, ownerHomePage, getProductById };
+
+const getProductsBySupName = async (req, res) => {
+
+  const searchTerm = req.query.supplier;
+
+  if (!searchTerm) return res.status(400).json({ message: 'Supplier name is required' });
+
+  try {
+    const matchingSuppliers = await Supplier.find({
+      companyName: { $regex: new RegExp(searchTerm, 'i') } // case-insensitive search
+    });
+
+    const products = [];
+
+    // Flatten all products from all matching suppliers
+    matchingSuppliers.forEach(supplier => {
+      supplier.products.forEach(prod => {
+        products.push({
+          ...prod.toObject(),  // Convert subdocument to plain object
+          companyName: supplier.companyName  // Add supplier name to each product
+        });
+      });
+    });
+
+    res.json({ products });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+  };
+
+module.exports = { registerSupplier, loginSupplier, getProducts, addProduct, ownerHomePage, getProductById, goOwnerPage, getProductsBySupName };
+
+ 

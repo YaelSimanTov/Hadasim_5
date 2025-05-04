@@ -14,8 +14,11 @@ router.get('/:supplierId/products', supplierController.getProducts);
 router.post('/:supplierId/products', supplierController.addProduct);
 
 router.get('/owner-home-page', supplierController.ownerHomePage);
+router.get('/get-owner-home-page', supplierController.goOwnerPage);
 
+ 
 router.get('/productsOrder/:id', supplierController.getProductById);
+
 router.get('/productPage',(req,res)=>{
     res.render('productPage');
   })
@@ -24,18 +27,17 @@ router.get('/supplierDashboard/:id', (req, res) => {
     res.render('supplierDashboard', { id: req.params.id });
 });
 
-router.get('/supOrders/:id',(req,res)=>{
-    res.render('supOrders',{ id: req.params.id });
-});
-
-
-
 
 
 router.get('/accountSettings',(req,res)=>{
     res.render('accountSettings');
   })
   
+
+  
+
+router.get('/search', supplierController.getProductsBySupName);
+ 
 
 module.exports = router;
 

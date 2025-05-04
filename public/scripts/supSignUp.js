@@ -9,7 +9,6 @@ document.getElementById('add-product').addEventListener('click', function() {
         <input type="number" placeholder="Price per Item" class="product-price" required>
         <input type="number" placeholder="Quantity Available" class="product-quantity" required>
         <input type="number" placeholder="Minimum Quantity" class="product-min-quantity" required> <!-- Add minQuantity field -->
-
     `;
     
     productList.appendChild(newProductEntry);

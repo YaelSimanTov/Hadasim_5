@@ -1,0 +1,77 @@
+ 
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF; /* clean white background */
+    color: #424242; /* dark gray for text */
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #FAFAFA; /* very light background for content */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+h2, h3 {
+    color: #EF6C00; /* orange highlight for headers */
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    background-color: #FFFFFF; /* white for clean contrast */
+}
+
+thead {
+    background-color: #EF6C00; /* orange header row */
+    color: #FFFFFF;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #F9F9F9; /* subtle light row striping */
+}
+
+tr:hover {
+    background-color: #FFF3E0; /* light orange on hover */
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+input[type="text"],
+input[type="number"] {
+    flex: 1 1 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #66BB6A; /* soft green */
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #558B2F; /* darker green on hover */
+}

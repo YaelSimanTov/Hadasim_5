@@ -1,12 +1,12 @@
 :root {
-    --primary-orange: #EF6C00; /* כתום כהה */
-    --primary-green: #66BB6A; /* ירוק בהיר */
-    --dark-gray: #424242; /* אפור כהה */
-    --light-gray: #f0f0f0; /* אפור בהיר */
-    --white: #FFFFFF; /* לבן */
-    --status-green: #66BB6A; /* הושלמה */
-    --status-yellow: #FFD54F; /* בתהליך */
-    --status-gray: #BDBDBD; /* ממתינה */
+    --primary-orange: #EF6C00;  
+    --primary-green: #66BB6A;  
+    --dark-gray: #424242;  
+    --light-gray: #f0f0f0;  
+    --white: #FFFFFF; 
+    --status-green: #66BB6A;  
+    --status-yellow: #FFD54F;  
+    --status-gray: #BDBDBD;  
 }
 
 body {
@@ -25,8 +25,9 @@ h1 {
 
 #product-details {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
@@ -34,14 +35,22 @@ h1 {
     max-width: 40%;
     height: auto;
     border-radius: 8px;
+    /* margin-bottom: 20px; */
+
 }
 
 .product-info {
-    max-width: 55%;
+    max-width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    /* padding-left: 1rem; */
+
+
 }
+
 
 .product-info h2 {
     color: var(--primary-orange);
@@ -106,6 +115,7 @@ button:hover {
     color: white;
 }
 
+
 /* Responsiveness */
 @media (max-width: 768px) {
     #product-details {
@@ -139,12 +149,6 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
   
-.product-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-left: 1rem;
-}
   
 .detail-item {
 margin-bottom: 8px;

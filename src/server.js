@@ -65,19 +65,6 @@ app.get('/ownerHomePage',(req,res)=>{
 
 
  
-// עדכון כל ההזמנות עם שם הספק לפי ה־supplierId
-async function updateOrdersWithSupplierNames() {
-  const orders = await Order.find().populate('supplierId');
-
-  for (const order of orders) {
-    if (!order.supplierName && order.supplierId && order.supplierId.name) {
-      order.supplierName = order.supplierId.name;
-      await order.save();
-    }
-  }
-
-  console.log("✅ כל ההזמנות עודכנו עם שם הספק.");
-}
 
 // Start server
 const PORT = 5000;
